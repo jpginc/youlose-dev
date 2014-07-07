@@ -1,4 +1,4 @@
-all:ios android win
+all:ios android win standard
 ios:common
 	cat > /home/jpginc/YouLose-iphone/www/config.xml i-config.xml
 	make ios -C	js/
@@ -10,12 +10,15 @@ android:common
 	make android -C	css/
 	make android -C	html/
 win:common
-	cat > /home/jpginc/YouLose-win/www/config.xml w-config.xml
+	cat w-config.xml > /home/jpginc/YouLose-win/www/config.xml
 	make win -C	js/
 	make win -C	css/
 	make win -C	html/
 common:
 	echo nothing yet
+standard:common
+	make standard -C html/
+	make standard -C js/
 
 pushall:pushios pushandroid pushwin
 pushios:common ios 

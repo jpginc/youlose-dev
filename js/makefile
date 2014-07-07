@@ -1,15 +1,17 @@
-commonFiles = main.js
-androidFiles = a-hello.js
-iosFiles = i-hello.js
-winFiles = w-hello.js
+commonFiles = main.js\
+			  user.js
+androidFiles = ${commonFiles}
+iosFiles = ${commonFiles}
+winFiles = ${commonFiles}
+standardFiles = ${commonFiles}\
+				web-localData.js
 
-all:ios android win
-ios:${commonFiles} ${iosFiles} 
-	cat ${commonFiles} > /home/jpginc/YouLose-iphone/www/js/main.js
-	cat ${iosFiles} > /home/jpginc/YouLose-iphone/www/js/platformSpecific.js
-android:${commonFiles} ${androidFiles} 
-	cat ${commonFiles} > /home/jpginc/YouLose-android/www/js/main.js
-	cat ${androidFiles} > /home/jpginc/YouLose-android/www/js/platformSpecific.js
-win:${commonFiles} ${winFiles} 
-	cat ${commonFiles} > /home/jpginc/YouLose-win/www/js/main.js
-	cat ${winFiles} > /home/jpginc/YouLose-win/www/js/platformSpecific.js
+all:ios android win standard
+ios:${iosFiles} 
+	cat ${iosFiles} > /home/jpginc/YouLose-iphone/www/js/main.js
+android:${androidFiles} 
+	cat ${androidFiles} > /home/jpginc/YouLose-android/www/js/main.js
+win:${winFiles} 
+	cat ${winFiles} > /home/jpginc/YouLose-win/www/js/main.js
+standard: ${winFiles} 
+	cat ${winFiles} > /home/jpginc/YouLose-standard/js/main.js

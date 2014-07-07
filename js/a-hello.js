@@ -1,3 +1,0 @@
-otherAlert(){
-    alert("android");
-}
