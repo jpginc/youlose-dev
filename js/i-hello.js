@@ -1,0 +1,3 @@
+otherAlert(){
+    alert("iphone");
+}
