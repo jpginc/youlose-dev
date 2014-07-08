@@ -18,6 +18,7 @@ common:
 	echo nothing yet
 standard:common
 	make standard -C html/
+	make standard -C css/
 	make standard -C js/
 
 pushall:pushios pushandroid pushwin

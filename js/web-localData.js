@@ -22,7 +22,7 @@ localData = (function() {
         }
         savedData[key] = value;
         doument.cookie = key + "=" + value +"; " + expiry;
-        return this;
+        return;
     }
 
     return {

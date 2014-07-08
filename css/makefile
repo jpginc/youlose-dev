@@ -6,8 +6,7 @@ iosFiles = ${commonFiles}\
 winFiles = ${commonFiles}\
 		   win.css
 standardFiles = ${commonFiles}\
-		   		standard.css\
-		   		standard2.css
+		   		standard.css
 		   
 all:ios android win standard
 ios:${iosFiles} 

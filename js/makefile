@@ -1,5 +1,6 @@
 commonFiles = main.js\
-			  user.js
+			  user.js\
+			  time.js
 androidFiles = ${commonFiles}
 iosFiles = ${commonFiles}
 winFiles = ${commonFiles}

@@ -1,26 +1,38 @@
 var iLostUser = (function() {
-    var data 
-    var controller
+    var data;
+    var controller;
 
     function loadData(data) {
         data = data || newUser();
-        return this;
+        return; 
     }
 
     function newUser() {
-        
-        return this;
+        return; 
     }
 
+    function initialize(controller) {
+        controller = controller;
+        loadData(controller.fetchData("user"));
+        return; 
+    }
+
+    function getLastLoss(controller) {
+        return data["lastLoss"];
+    }
+    function newLoss() {
+        data["lastLoss"] = new Date().getTime();
+        return; 
+    }
+
+    function toString() {
+        return data && JSON.stringify(data) || 
+            controller && controller.log("error: user data is falsy");
+    }
 
     return {
-        initialize: function(controller) {
-            controller = controller
-            loadData(controller.fetchData("user");
-        },
-        
-        getLastLoss: function() {
-            return data["lastLoss"];
-        },
-    }
+        initialize: initialize ,
+        getLastLoss: getLastLoss,
+        newLoss: newLoss
+    };
 })();

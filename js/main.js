@@ -1,36 +1,31 @@
-var app = {
-    // Application Constructor
-    initialize: function() {
-        this.bindEvents();
-    },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicity call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-        app.receivedEvent('deviceready');
-        if (parseFloat(window.device.version) === 7.0) {
-              document.body.style.marginTop = "20px";
+var controller = (function() {
+    var errorReportingLevel = 0;
+    var isInitialized = false;
+
+    function errorLogging(toLog, priority) {
+        if(priority === undefined || errorReportingLevel < priority) {
+            console.log(toLog);
+            return true
         }
-        alert("here");
-        otherAlert();
-    },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
+        return false
     }
-};
+
+    function initialize() {
+        if(isInitialized) {
+            return;
+        }
+        isInitialized = true;
+        var test1 = new Date();
+        var test2 = new Date();
+        alert(niceString(dayHourMinSec(test1.getTime(), test2.getTime() + 1234211)));
+        return;
+    }
+    
+    return {
+        log: errorLogging,
+        initialize: initialize
+    };
+})();
+
+// will only work on mobile devices
+document.addEventListener("deviceready", controller.initialize, false);
