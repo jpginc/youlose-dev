@@ -1,4 +1,5 @@
-commonFiles = main.css
+commonFiles = main.css\
+			
 androidFiles = ${commonFiles}\
 			   android.css
 iosFiles = ${commonFiles}\
@@ -11,9 +12,13 @@ webFiles = ${commonFiles}\
 all:ios android win web
 ios:${iosFiles} 
 	cat ${iosFiles} > /home/jpginc/YouLose-iphone/www/css/style.css
+	cp jquery.mobile-1.4.3.min.css /home/jpginc/YouLose-iphone/www/css/
 android:${androidFiles} 
 	cat ${androidFiles} > /home/jpginc/YouLose-android/www/css/style.css
+	cp jquery.mobile-1.4.3.min.css /home/jpginc/YouLose-android/www/css/
 win:${winFiles} 
-	cat ${winFiles} > /home/jpginc/YouLose-android/www/css/style.css
+	cat ${winFiles} > /home/jpginc/YouLose-win/www/css/style.css
+	cp jquery.mobile-1.4.3.min.css /home/jpginc/YouLose-win/www/css/
 web:${webFiles} 
 	cat ${webFiles} > /home/jpginc/YouLose-web/css/style.css
+	cp jquery.mobile-1.4.3.min.css /home/jpginc/YouLose-web/css/

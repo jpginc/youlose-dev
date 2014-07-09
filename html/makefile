@@ -6,4 +6,4 @@ android:
 win: 
 	cat licence mobile-index.html > /home/jpginc/YouLose-win/www/index.html
 web:
-	cat licence web-index.html > /home/jpginc/YouLose-web/index.html
+	cat licence mobile-index.html > /home/jpginc/YouLose-web/index.html

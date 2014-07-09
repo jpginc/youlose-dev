@@ -18,8 +18,8 @@ win:common
 common:
 	mkdir -p /home/jpginc/YouLose-{iphone,win,android}/www/{js,css}
 	mkdir -p /home/jpginc/YouLose-web/{js,css}
-	cp icons/* /home/jpginc/YouLose-{iphone,win,android}/www/ -r
-	cp icons/* /home/jpginc/YouLose-web -r
+	#cp icons/* /home/jpginc/YouLose-{iphone,win,android}/www -r
+	#cp icons/* /home/jpginc/YouLose-web -r
 web:common
 	make web -C html/
 	make web -C css/

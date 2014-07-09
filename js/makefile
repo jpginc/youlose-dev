@@ -3,10 +3,8 @@ commonFiles = main.js\
 			  time.js
 commonLibFiles = library/jquery-1.11.1.min.js
 mobLibFiles = library/jquery.mobile-1.4.3.min.js\
-			  library/jquery.mobile-1.4.3.min.css\
 			  library/mobile\ images/
 webLibFiles = library/jquery-ui.min.js\
-			  library/jquery-ui.min.css\
 			  library/ui\ images/
 androidFiles = ${commonFiles}
 iosFiles = ${commonFiles}
