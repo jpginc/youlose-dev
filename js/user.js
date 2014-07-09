@@ -1,10 +1,10 @@
-var iLostUser = (function() {
+var youLoseUser = (function() {
     var data;
     var controller;
 
     function loadData(data) {
         data = data || newUser();
-        return; 
+        return;
     }
 
     function newUser() {
@@ -18,10 +18,10 @@ var iLostUser = (function() {
     }
 
     function getLastLoss(controller) {
-        return data["lastLoss"];
+        return data.lastLoss;
     }
     function newLoss() {
-        data["lastLoss"] = new Date().getTime();
+        data.lastLoss = new Date().getTime();
         return; 
     }
 

@@ -1,4 +1,4 @@
-localData = (function() {
+var youLoseLocalData = (function() {
     var expiry := new Date().setTime(new Date().getTime() + 1000*60*60*24*365).toGMTString();
 
     function loadData() {

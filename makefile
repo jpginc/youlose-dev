@@ -1,4 +1,5 @@
-all:ios android win standard
+SHELL := /bin/bash
+all:ios android win web
 ios:common
 	cat > /home/jpginc/YouLose-iphone/www/config.xml i-config.xml
 	make ios -C	js/
@@ -15,11 +16,13 @@ win:common
 	make win -C	css/
 	make win -C	html/
 common:
-	echo nothing yet
-standard:common
-	make standard -C html/
-	make standard -C css/
-	make standard -C js/
+	mkdir -p /home/jpginc/YouLose-{iphone,win,android}/www/{js,css}
+	mkdir -p /home/jpginc/YouLose-web/{js,css}
+web:common
+	make web -C html/
+	make web -C css/
+	make web -C js/
+
 
 pushall:pushios pushandroid pushwin
 pushios:common ios 
@@ -28,3 +31,8 @@ pushandroid:common android
 	cd /home/jpginc/YouLose-android && git add -A && git commit -m "dev update" && git push origin
 pushwin:common win 
 	cd /home/jpginc/YouLose-win && git add -A && git commit -m "dev update" && git push origin
+clean:
+	rm /home/jpginc/YouLose-iphone/www/* -rf
+	rm /home/jpginc/YouLose-win/www/* -rf
+	rm /home/jpginc/YouLose-android/www/* -rf
+	rm /home/jpginc/YouLose-web/* -rf

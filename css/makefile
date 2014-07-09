@@ -5,15 +5,15 @@ iosFiles = ${commonFiles}\
 		   ios.css
 winFiles = ${commonFiles}\
 		   win.css
-standardFiles = ${commonFiles}\
-		   		standard.css
+webFiles = ${commonFiles}\
+		   		web.css
 		   
-all:ios android win standard
+all:ios android win web
 ios:${iosFiles} 
 	cat ${iosFiles} > /home/jpginc/YouLose-iphone/www/css/style.css
 android:${androidFiles} 
 	cat ${androidFiles} > /home/jpginc/YouLose-android/www/css/style.css
 win:${winFiles} 
 	cat ${winFiles} > /home/jpginc/YouLose-android/www/css/style.css
-standard:${standardFiles} 
-	cat ${standardFiles} > /home/jpginc/YouLose-standard/css/style.css
+web:${webFiles} 
+	cat ${webFiles} > /home/jpginc/YouLose-web/css/style.css
