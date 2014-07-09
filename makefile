@@ -1,12 +1,12 @@
 SHELL := /bin/bash
 all:ios android win web
 ios:common
-	cat > /home/jpginc/YouLose-iphone/www/config.xml i-config.xml
+	cat i-config.xml > /home/jpginc/YouLose-iphone/www/config.xml
 	make ios -C	js/
 	make ios -C	css/
 	make ios -C	html/
 android:common
-	cat > /home/jpginc/YouLose-android/www/config.xml a-config.xml
+	cat a-config.xml > /home/jpginc/YouLose-android/www/config.xml
 	make android -C	js/
 	make android -C	css/
 	make android -C	html/
