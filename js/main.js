@@ -21,7 +21,7 @@ var controller = (function() {
                 $.mobile.loading("show");
                 view.getPage(hash, data, dataReady, loadingFailed);
             } else {
-                dataReady(page);
+                dataReady($(page));
             }
         }
         return;
