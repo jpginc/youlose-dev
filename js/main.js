@@ -15,11 +15,13 @@ var controller = (function() {
         if(typeof data.toPage === "string") { 
             log("to page: "  + data.toPage, 1);
             hash = $.mobile.path.parseUrl(data.toPage).hash.substring(1);
+            event.preventDefault();
 
             if((page = document.getElementById(hash)) === null) {
                 $.mobile.loading("show");
-                event.preventDefault();
                 view.getPage(hash, data, dataReady, loadingFailed);
+            } else {
+                dataReady(page);
             }
         }
         return;
@@ -29,7 +31,7 @@ var controller = (function() {
         $.mobile.loading("hide");
         loading = false;
         log(page.html());
-        $.mobile.pageContainer.pagecontainer("change", page);
+        $.mobile.pageContainer.pagecontainer("change", page, {changeHash: false});
         return;
     }
 
