@@ -60,7 +60,7 @@ common:
 	cat i-config.xml > ${iosDir}/config.xml
 	cat a-config.xml > ${androidDir}/config.xml
 	cat w-config.xml > ${winDir}/config.xml
-	cat html/licence html/mobile-index.html | tee -a ${allDirs}/index.html >/dev/null
+	cat html/licence html/index.html | tee -a ${allDirs}/index.html >/dev/null
 
 #-----------------------------     js       --------------------------------------------------------
 jss:mobjs webjs
