@@ -60,15 +60,15 @@ common:
 	cat i-config.xml > ${iosDir}/config.xml
 	cat a-config.xml > ${androidDir}/config.xml
 	cat w-config.xml > ${winDir}/config.xml
-	cat html/licence html/index.html | tee -a ${allDirs}/index.html >/dev/null
+	cat html/licence html/index.html | tee ${allDirs}/index.html >/dev/null
 
 #-----------------------------     js       --------------------------------------------------------
 jss:mobjs webjs
 	echo ${allDirs}/js | xargs -n 1 cp ${libraryjsFiles}
 mobjs:
-	cat ${mobjsFiles} | tee -a ${mobDirs}/js/main.js >/dev/null
+	cat ${mobjsFiles} | tee ${mobDirs}/js/main.js >/dev/null
 webjs:
-	cat ${webjsFiles} | tee -a ${webDir}/js/main.js >/dev/null
+	cat ${webjsFiles} | tee ${webDir}/js/main.js >/dev/null
 #---------------------------      css      --------------------------------------------------------
 csss:${commoncssFiles}
 	echo ${allDirs}/css | xargs -n 1 cp ${commoncssFiles}
