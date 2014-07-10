@@ -14,7 +14,7 @@ function View() {
     function getMenu() {
         var navbar;
         if(!menu) {
-            menu = getDiv("menu", "footer").attr("data-position","fixed").append(
+            menu = getDiv("menu", "footer").attr({"data-position":"fixed","data-id":"menu"}).append(
                     getDiv("navbar", "navbar").append(getUL));
         }
         return menu.clone();
