@@ -1,42 +1,76 @@
 SHELL := /bin/bash
-all:ios android win web
-ios:common
-	cat i-config.xml > /home/jpginc/YouLose-iphone/www/config.xml
-	make ios -C	js/
-	make ios -C	css/
-	make ios -C	html/
-android:common
-	cat a-config.xml > /home/jpginc/YouLose-android/www/config.xml
-	make android -C	js/
-	make android -C	css/
-	make android -C	html/
-win:common
-	cat w-config.xml > /home/jpginc/YouLose-win/www/config.xml
-	make win -C	js/
-	make win -C	css/
-	make win -C	html/
-common:
-	mkdir -p /home/jpginc/YouLose-{iphone,win,android}/www/js/
-	mkdir -p /home/jpginc/YouLose-{iphone,win,android}/www/css/images/
-	mkdir -p /home/jpginc/YouLose-web/js/
-	mkdir -p /home/jpginc/YouLose-web/css/images/
-	#cp icons/* /home/jpginc/YouLose-{iphone,win,android}/www -r
-	#cp icons/* /home/jpginc/YouLose-web -r
-web:common
-	make web -C html/
-	make web -C css/
-	make web -C js/
 
+baseDir = /home/jpginc/YouLose-
+iosDir = ${baseDir}ios/www
+winDir = ${baseDir}win/www
+androidDir = ${baseDir}android/www
+webDir = ${baseDir}web/www
+mobDirs = ${baseDir}{ios,win,android}/www
+allDirs = ${baseDir}{web,ios,win,android}/www
 
-pushall:pushios pushandroid pushwin
-pushios:common ios 
-	cd /home/jpginc/YouLose-iphone && git add -A && git commit -m "dev update" && git push origin
-pushandroid:common android 
-	cd /home/jpginc/YouLose-android && git add -A && git commit -m "dev update" && git push origin
-pushwin:common win 
-	cd /home/jpginc/YouLose-win && git add -A && git commit -m "dev update" && git push origin
+commonjsFiles =  js/main.js\
+			  js/user.js\
+			  js/time.js\
+			  js/view.js
+libraryjsFiles = js/library/jquery-1.11.1.min.js\
+				 js/library/jquery.mobile-1.4.3.min.js
+webjsFiles = ${commonjsFiles}\
+			 js/web-localData.js
+mobjsFiles = ${commonjsFiles}
+
+commoncssFiles = css/jquery.mobile-1.4.3.min.css
+
+#---------------------------      create/clean dirs   ----------------------------------------------------
+rebuild:dirs icons all
+all:common jss csss
+
+dirs:
+	mkdir -p ${allDirs}/{js,css/images,res/{icon,screen},img}
 clean:
-	rm /home/jpginc/YouLose-iphone/www/* -rf
-	rm /home/jpginc/YouLose-win/www/* -rf
-	rm /home/jpginc/YouLose-android/www/* -rf
-	rm /home/jpginc/YouLose-web/* -rf
+	rm ${allDirs}/* -rf
+#------------------------------       git push        -------------------------------------------------
+push:pushios pushandroid pushwin
+pushios:common ios
+	cd /home/jpginc/YouLose-ios && git add -A && git commit -m "dev update" && git push origin
+pushandroid:common android
+	cd /home/jpginc/YouLose-android && git add -A && git commit -m "dev update" && git push origin
+pushwin:common win
+	cd /home/jpginc/YouLose-win && git add -A && git commit -m "dev update" && git push origin
+#------------------------------       icons       -------------------------------------------------
+icons:iosicons winicons androidicons
+iconscommon:
+	echo ${mobDirs} | xargs -n 1 cp icons/icon.png
+	echo ${mobDirs} | xargs -n 1 cp icons/img/logo.png
+iosicons:iconscommon
+	mkdir -p ${iosDir}/res/{icon,screen}/ios/
+	cp icons/res/icon/ios/* ${iosDir}/res/icon/ios
+	cp icons/res/screen/ios/* ${iosDir}/res/screen/ios
+	
+winicons:iconscommon
+	mkdir -p ${winDir}/res/{icon,screen}/windows-phone
+	cp icons/res/icon/windows-phone/* ${winDir}/res/icon/windows-phone
+	cp icons/res/screen/windows-phone/* ${winDir}/res/screen/windows-phone
+
+androidicons:iconscommon
+	mkdir -p ${androidDir}/res/{icon,screen}/android
+	cp icons/res/icon/android/* ${androidDir}/res/icon/android
+	cp icons/res/screen/android/* ${androidDir}/res/screen/android
+#-----------------------------     needed files      ------------------------------------------------
+common:
+	cat i-config.xml > ${iosDir}/config.xml
+	cat a-config.xml > ${androidDir}/config.xml
+	cat w-config.xml > ${winDir}/config.xml
+	cat html/licence html/mobile-index.html | tee -a ${allDirs}/index.html >/dev/null
+
+#-----------------------------     js       --------------------------------------------------------
+jss:mobjs webjs
+	echo ${allDirs}/js | xargs -n 1 cp ${libraryjsFiles}
+mobjs:
+	cat ${mobjsFiles} | tee -a ${mobDirs}/js/main.js >/dev/null
+webjs:
+	cat ${webjsFiles} | tee -a ${webDir}/js/main.js >/dev/null
+#---------------------------      css      --------------------------------------------------------
+csss:${commoncssFiles}
+	echo ${allDirs}/css | xargs -n 1 cp ${commoncssFiles}
+	echo ${allDirs}/css/images/ | xargs -n 1 cp css/images/* -r
+
