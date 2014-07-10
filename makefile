@@ -18,7 +18,8 @@ webjsFiles = ${commonjsFiles}\
 			 js/web-localData.js
 mobjsFiles = ${commonjsFiles}
 
-commoncssFiles = css/jquery.mobile-1.4.3.min.css
+commoncssFiles = css/jquery.mobile-1.4.3.min.css\
+				 css/main.css
 
 #---------------------------      create/clean dirs   ----------------------------------------------------
 rebuild:dirs icons all
@@ -30,11 +31,11 @@ clean:
 	rm ${allDirs}/* -rf
 #------------------------------       git push        -------------------------------------------------
 push:pushios pushandroid pushwin
-pushios:common ios
+pushios:
 	cd /home/jpginc/YouLose-ios && git add -A && git commit -m "dev update" && git push origin
-pushandroid:common android
+pushandroid:
 	cd /home/jpginc/YouLose-android && git add -A && git commit -m "dev update" && git push origin
-pushwin:common win
+pushwin:
 	cd /home/jpginc/YouLose-win && git add -A && git commit -m "dev update" && git push origin
 #------------------------------       icons       -------------------------------------------------
 icons:iosicons winicons androidicons
@@ -73,4 +74,3 @@ webjs:
 csss:${commoncssFiles}
 	echo ${allDirs}/css | xargs -n 1 cp ${commoncssFiles}
 	echo ${allDirs}/css/images/ | xargs -n 1 cp css/images/* -r
-
