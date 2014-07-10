@@ -25,7 +25,7 @@ function View() {
         var li;
         for(var i = 0; i < menuItems.length; i++) {
             li = $("<li>");
-            li.append($("<a>", {href: menuItems[i] + ".html",
+            li.append($("<a>", {href: "#" +  menuItems[i],
                 "data-icon": menuIcons[i], "data-role":"button"}));
             ul.append(li);
         }
