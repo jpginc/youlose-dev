@@ -16,8 +16,10 @@ win:common
 	make win -C	css/
 	make win -C	html/
 common:
-	mkdir -p /home/jpginc/YouLose-{iphone,win,android}/www/{js,css}
-	mkdir -p /home/jpginc/YouLose-web/{js,css}
+	mkdir -p /home/jpginc/YouLose-{iphone,win,android}/www/js/
+	mkdir -p /home/jpginc/YouLose-{iphone,win,android}/www/css/images/
+	mkdir -p /home/jpginc/YouLose-web/js/
+	mkdir -p /home/jpginc/YouLose-web/css/images/
 	#cp icons/* /home/jpginc/YouLose-{iphone,win,android}/www -r
 	#cp icons/* /home/jpginc/YouLose-web -r
 web:common

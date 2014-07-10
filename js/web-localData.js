@@ -1,10 +1,10 @@
 var youLoseLocalData = (function() {
-    var expiry := new Date().setTime(new Date().getTime() + 1000*60*60*24*365).toGMTString();
+    var expiry = new Date().setTime(new Date().getTime() + 1000*60*60*24*365);
 
     function loadData() {
-        savedData = document.cookie
+        savedData = document.cookie;
         if(savedData) {
-            savedData := savedData.split(";");
+            savedData = savedData.split(";");
         }
         return this;
     }
@@ -13,7 +13,7 @@ var youLoseLocalData = (function() {
         if(!savedData) {
                 loadData();
             }
-        return savedData["key"]
+        return savedData.key;
     }
 
     function saveData(key, value) {

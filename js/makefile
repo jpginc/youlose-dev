@@ -1,11 +1,10 @@
 commonFiles = main.js\
 			  user.js\
-			  time.js
+			  time.js\
+			  view.js
 commonLibFiles = library/jquery-1.11.1.min.js
-mobLibFiles = library/jquery.mobile-1.4.3.min.js\
-			  library/mobile\ images/
-webLibFiles = library/jquery-ui.min.js\
-			  library/ui\ images/
+mobLibFiles = library/jquery.mobile-1.4.3.min.js
+webLibFiles = library/jquery.mobile-1.4.3.min.js
 androidFiles = ${commonFiles}
 iosFiles = ${commonFiles}
 winFiles = ${commonFiles}
@@ -25,7 +24,7 @@ win:${winFiles}
 	cat ${winFiles} > /home/jpginc/YouLose-win/www/js/main.js
 	cp ${commonLibFiles} /home/jpginc/YouLose-win/www/js/
 	cp ${mobLibFiles} /home/jpginc/YouLose-win/www/js/ -r
-web: ${winFiles} 
-	cat ${winFiles} > /home/jpginc/YouLose-web/js/main.js
+web: ${webFiles} 
+	cat ${webFiles} > /home/jpginc/YouLose-web/js/main.js
 	cp ${commonLibFiles} /home/jpginc/YouLose-web/js/
 	cp ${webLibFiles} /home/jpginc/YouLose-web/js/ -r
