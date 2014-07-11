@@ -13,7 +13,8 @@ commonjsFiles =  js/main.js\
 			  js/time.js\
 			  js/view.js
 libraryjsFiles = js/library/jquery-1.11.1.min.js\
-				 js/library/jquery.mobile-1.4.3.min.js
+				 js/library/jquery.mobile-1.4.3.min.js\
+				 js/library/modernizr.js
 webjsFiles = ${commonjsFiles}\
 			 js/web-localData.js
 mobjsFiles = ${commonjsFiles}
