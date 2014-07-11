@@ -1,8 +1,7 @@
 function PageLoader() {
     var body = $("body");
-    var navCount = 0;
     var pages = {
-        errorPage: ILostErrorPage()
+        errorPage: ILostErrorPage(),
     };
 
 
@@ -10,58 +9,57 @@ function PageLoader() {
     //the widget
     this.loadPage = function(toLoad, callback) {
         if(! pages[toLoad]) {
+            controller.log("page not found!", 4);
             toLoad = "errorPage";
         } 
         insertToDom(pages[toLoad]);
         callback(pages[toLoad]);
-        return publicMethods;
+        return this;
     };
 
-    function insertToDom(widget) {
-        if(document.getElementById(widget.id) === null) {
-            widget.jquery = widget.jquery.appendTo(body);
+    function insertToDom(page) {
+        if(document.getElementById(page.attr("id")) === null) {
+            controller.log("page not in dom yet, inserting...", 1);
+            controller.log("html:" + page.html(), 1);
+            $("body").append(page);
         }
         return;
     }
 
     function navBar() {
-        var postfix = "png";
+        var postfix = ".png";
         var prefix = "css/images/Button_";
-        var buttons = ["Info", "World", "Broadast", "Friends", "More"];
-        var nav = new ILostWidget("navbar" + navCount, navBar);
-        var navContainer = menu();
-        navCount++;
+        var buttons = ["Info", "World", "Broadcast", "Friends", "More"];
+        var nav = getElement("div", {class: "navBar", "data-role": "navbar"});
+
+        //populate the nav bar with nav images
         if(Modernizr.svg) {
-            postfix = "svg";
+            postfix = ".svg";
         } 
         for(var i = 0; i < buttons.length; i++) {
-            nav.append(getElement("img", {class: "navImage",
-                src: prefix + buttons[i] + postfix}));
+            var img = getElement("img", {class: "navImage",
+                src: prefix + buttons[i] + postfix,
+                "data-linkto": buttons[i]});
+            img.on("vmousedown", controller.navClick).appendTo(nav);
         }
-        nav.parent(navContainer);
-        navContainer.replace(nav);
-        return navContainer;
-    }
+        controller.log("nav html: " + nav.html(), 1);
 
-    function menu() {
-        var options = {
-            "data-position":"fixed",
-            "data-id":"menu",
-            "data-tap-toggle": false,
-            class: "navContainer",
-        };
-        return new ILostWidget("menu" + navCount, "footer", options);
+        //put the nav into a footer container
+        var container = getElement("div", {class: "navContainer", "data-position": "fixed", 
+            "data-id":"menu", "data-tap-toggle":false, "data-role":"footer"});
+        container.append(nav);
+        return container;
     }
-
 
     //to do make this a dialog
     function ILostErrorPage(){
-        var contents = {
-            content: new ILostWidget("errorContent", "content",
-                "<h1>Error loading page!</h1>"),
-            footer: navBar()
-        };
-        return new ILostWidget("errorPage", contents);
+        controller.log("making error page", 3);
+
+        var page = getDiv("errorPage", "page");
+        var content = document.createElement("h1");
+        content.innerHTML = "Error Loading Page!";
+        page.append([content, navBar()]);
+        return page;
     }
 
     return this;

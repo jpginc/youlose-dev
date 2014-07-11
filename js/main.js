@@ -2,6 +2,7 @@ var controller = (function() {
     var errorReportingLevel = 0;
     var isInitialized = false;
     var view;
+    var pageLoader;
 
     //priority 10 is the highest, 1 is the lowes
     function log(toLog, priority) {
@@ -15,15 +16,24 @@ var controller = (function() {
         if(isInitialized) {
             return false;
         }
+        log("initializing..", 1);
         isInitialized = true;
         view = new View(this);
-        view.initialize(publicMethods);
+        log("view done", 1);
+        pageLoader = new PageLoader();
+        log("page loader done", 1);
+        view.change(pageLoader.loadPage("user", view.change));
+        log("initializing done", 1);
         return publicMethods;
     }
 
     function loadPage(toLoad) {
         pageLoader.loadPage(toLoad, view.change, view.error);
         return publicMethods;
+    }
+
+    function navClick(event) {
+       loadPage($(this).attr("data-linkto"));
     }
 
     function resume() {
@@ -42,7 +52,8 @@ var controller = (function() {
         initialize: initialize,
         loadPage: loadPage,
         resume: resume,
-        fetchData: fetchData
+        fetchData: fetchData,
+        navClick: navClick
     };
 
     return publicMethods;

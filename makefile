@@ -13,7 +13,6 @@ commonjsFiles =  js/main.js\
 			  js/time.js\
 			  js/view.js\
 			  js/pageLoader.js\
-			  js/widgit.js\
 			  js/helperMethods.js
 libraryjsFiles = js/library/jquery-1.11.1.min.js\
 				 js/library/jquery.mobile-1.4.3.min.js\
