@@ -36,9 +36,6 @@ function View() {
         return ul;
     }
 
-    function getDiv(id, dataRole) {
-        return $("<div>", {id: id, "data-role": dataRole});
-    }
 
     //show the button and give it an animation
     function initialize(controller) {
@@ -57,21 +54,32 @@ function View() {
             window.setTimeout(function() {
                 $(button).removeClass("clicked");
                 window.setTimeout(function() {
-                    getPage("user", null, controller.dataReady, loadingFailed);
                 }, 250);
             }, 210);
         });
+        return publicMethods;
     }
 
+    //a jquery dom object that is already inserted into the tree
     function change(to) {
         loadingWiget("hide");
         transitioner("change", to, {changeHash: false});
-        return;
+        return publicMethods;
     }
 
-    return {
+    function loading(off) {
+        if(off === false) {
+            loadingWiget("hide");
+        } else {
+            loadingWiget("show");
+        }
+        return publicMethods;
+    }
+
+    var publicMethods = {
         initialize: initialize,
         change : change,
-        abort: true
+        loading: loading
     };
+    return publicMethods;
 }

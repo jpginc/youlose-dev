@@ -38,3 +38,7 @@ html, body {
 .ui-page {
     -webkit-backface-visibility: hidden;
 }
+.navContainer {
+    overflow:auto;
+    white-space: nowrap;
+}

@@ -11,13 +11,17 @@ allDirs = ${baseDir}{web,ios,win,android}/www
 commonjsFiles =  js/main.js\
 			  js/user.js\
 			  js/time.js\
-			  js/view.js
+			  js/view.js\
+			  js/pageLoader.js\
+			  js/widgit.js\
+			  js/helperMethods.js
 libraryjsFiles = js/library/jquery-1.11.1.min.js\
 				 js/library/jquery.mobile-1.4.3.min.js\
 				 js/library/modernizr.js
 webjsFiles = ${commonjsFiles}\
 			 js/web-localData.js
-mobjsFiles = ${commonjsFiles}
+mobjsFiles = ${commonjsFiles}\
+			 js/mob-localData.js
 
 commoncssFiles = css/jquery.mobile-1.4.3.min.css\
 				 css/main.css

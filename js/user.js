@@ -4,35 +4,43 @@ var youLoseUser = (function() {
 
     function loadData(data) {
         data = data || newUser();
-        return;
+        if(data === "undefined") {
+                    controller.log("data is the string undefined. might be an error saving data", 9);
+                }
+        return publicMethods;
     }
 
     function newUser() {
-        return; 
+        return {
+            lastLoss: undefined,
+            lossHistory: ""
+        };
     }
 
     function initialize(controller) {
         controller = controller;
         loadData(controller.fetchData("user"));
-        return; 
+        return publicMethods;
     }
 
-    function getLastLoss(controller) {
+    function getLastLoss() {
         return data.lastLoss;
     }
     function newLoss() {
         data.lastLoss = new Date().getTime();
-        return; 
+        data.lossHistory += "," + data.lastLoss;
+        return publicMethods;
     }
 
     function toString() {
-        return data && JSON.stringify(data) || 
-            controller && controller.log("error: user data is falsy");
+        return JSON.stringify(data);
     }
 
-    return {
+    var publicMethods = {
         initialize: initialize ,
         getLastLoss: getLastLoss,
         newLoss: newLoss
     };
+
+    return publicMethods;
 })();

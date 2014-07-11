@@ -1,51 +1,57 @@
 var controller = (function() {
-    var errorReportingLevel = 1;
+    var errorReportingLevel = 0;
     var isInitialized = false;
-    var view = new View();
-    var myself = this;
+    var view;
 
-    function loadPage(toLoad) {
-        var page;
-
-        //if the page is already in the dom then no need to load it
-        if((page = document.getElementById(toLoad)) === null) {
-            $.mobile.loading("show");
-            page = pageLoader.getPage(toLoad);
-            if(page) {
-                view.change(page);
-            } 
-        } else {
-            view.change($(page));
-        }
-        return;
-    }
-
+    //priority 10 is the highest, 1 is the lowes
     function log(toLog, priority) {
-        if(priority === undefined || errorReportingLevel < priority) {
+        if(errorReportingLevel < priority) {
             console.log(toLog);
-            return true;
         }
-        return false;
+        return publicMethods;
     }
 
     function initialize() {
         if(isInitialized) {
-            return;
+            return false;
         }
         isInitialized = true;
-        view.initialize();
-        return;
+        view = new View(this);
+        view.initialize(publicMethods);
+        return publicMethods;
+    }
+
+    function loadPage(toLoad) {
+        pageLoader.loadPage(toLoad, view.change, view.error);
+        return publicMethods;
+    }
+
+    function resume() {
+        alert("resuming!");
+        return publicMethods;
+    }
+
+    function fetchData(key) {
+    }
+
+    function saveData(key) {
     }
     
-    return {
+    var publicMethods = {
         log: log,
-        initialize: initialize
+        initialize: initialize,
+        loadPage: loadPage,
+        resume: resume,
+        fetchData: fetchData
     };
+
+    return publicMethods;
 })();
 
 if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
     // will only work on mobile devices
     document.addEventListener("deviceready", controller.initialize, false);
+    document.addEventListener("resume", controller.resume, false);
 } else {
     //for desktop
     $(document).ready(controller.initialize);
