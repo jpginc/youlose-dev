@@ -1,5 +1,5 @@
 var controller = (function() {
-    var errorReportingLevel = 0;
+    var errorReportingLevel = 1;
     var isInitialized = false;
     var view;
     var pageLoader;
@@ -22,13 +22,15 @@ var controller = (function() {
         log("view done", 1);
         pageLoader = new PageLoader();
         log("page loader done", 1);
-        view.change(pageLoader.loadPage("user", view.change));
+        view.loading();
+        pageLoader.loadPage("user", view.change);
         log("initializing done", 1);
         return publicMethods;
     }
 
     function loadPage(toLoad) {
-        pageLoader.loadPage(toLoad, view.change, view.error);
+        view.loading();
+        pageLoader.loadPage(toLoad, view.change);
         return publicMethods;
     }
 

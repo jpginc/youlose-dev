@@ -3,7 +3,7 @@ function View() {
     this.change = function(to) {
         $.mobile.loading("hide");
         controller.log("about to change!", 1);
-        $.mobile.pageContainer.pagecontainer("change", to, {changeHash: false});
+        $.mobile.pageContainer.pagecontainer("change", to, {changeHash: false, transition: "slide"});
         controller.log("changed", 1);
         return this;
     };
