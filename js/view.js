@@ -55,7 +55,7 @@ function View(controller) {
                     lostBtnHandle.popup("open", openOptions);
                     myself.loading(false);
                 }, 500);
-            }, 100);
+            }, 400);
         }
         return this;
     };
