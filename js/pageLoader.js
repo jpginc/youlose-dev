@@ -24,8 +24,8 @@ function PageLoader(conteroller) {
         if(domElement === null) {
             controller.log("page not in dom yet, inserting...", 1);
             controller.log("html:" + pages[page].html(), 1);
-            pages[page].on("vclick", ".navbar img", controller.navClick);
-            pages[page].on("dragstart", ".navbar img", function() {return false;});
+            pages[page].on("vclick", ".navImg", controller.navClick);
+            pages[page].on("dragstart", ".navImg", function() {return false;});
             $("body").append(pages[page]);
         }
         return pages[page];
@@ -36,8 +36,8 @@ function PageLoader(conteroller) {
             return navbarHtml;
         }
 
-        var postfix = ".png";
-        var prefix = "css/images/Button_";
+        var postfix = '.png) no-repeat scroll center center / auto 100% transparent;"';
+        var prefix = 'background:url(css/images/Button_';
         var buttons = ["info", "World", "Broadcast", "Friends", "More"];
         var footerOptions = {
             class: "footer",
@@ -49,20 +49,18 @@ function PageLoader(conteroller) {
         var footer = createElement("div", footerOptions);
         var nav = createElement("div", {class: "navbar"}); //, "data-role": "navbar"});
 
-        var imgContainer = createElement("div", {class: "navImgContainer"});
-        var imgOptions = {class:"navImg",src: "", "data-link-to": ""};
+        var imgOptions = {class:"navImg",style: "", "data-link-to": ""};
         var navHtml = "";
 
         //populate the nav bar with nav images
         if(useSvg()) {
-            postfix = ".svg";
+            postfix = '.svg) no-repeat scroll center center / auto 100% transparent;"';
         } 
         for(var i = 0; i < buttons.length; i++) {
             var img;
-            imgOptions.src = prefix + buttons[i] + postfix;
+            imgOptions.style = prefix + buttons[i] + postfix;
             imgOptions["data-link-to"] = buttons[i];
-            img = createElement("img", imgOptions);
-            navHtml += appendContent(imgContainer, img);
+            navHtml += createElement("div", imgOptions);
         }
         nav = appendContent(nav, navHtml);
         footer = appendContent(footer, nav);
