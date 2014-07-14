@@ -83,7 +83,7 @@ var controller = (function() {
     return publicMethods;
 })();
 
-if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|Windows)/)) {
     // will only work on mobile devices
     controller.log("mobile startup", 1);
     document.addEventListener("deviceready", controller.initialize, false);
