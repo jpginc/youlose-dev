@@ -1,8 +1,9 @@
 var controller = (function() {
-    var errorReportingLevel = 1;
+    var errorReportingLevel = 0;
     var isInitialized = false;
     var view;
     var pageLoader;
+    var ignoreClicks = false;
 
     //priority 10 is the highest, 1 is the lowes
     function log(toLog, priority) {
@@ -35,7 +36,12 @@ var controller = (function() {
     }
 
     function navClick(event) {
-       loadPage($(this).attr("data-linkto"));
+        if(ignoreClicks) {
+            return;
+        }
+        ignoreClicks = true;
+        window.setTimeout(function() { ignoreClicks = false;}, 200);
+        loadPage($(this).attr("data-link-to"));
     }
 
     function resume() {

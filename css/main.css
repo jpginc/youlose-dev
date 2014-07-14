@@ -38,22 +38,22 @@ html, body {
 .ui-page {
     -webkit-backface-visibility: hidden;
 }
-.navContainer {
+.footer {
     height:10%;
     min-height:50px;
     background-color:white !important;
     border:none !important;
 }
-.navBar {
+.navbar {
     height:100%;
 }
-.navImageContainer {
+.navImgContainer {
     background-color:rgb(233, 233, 233);
     width:20%;
     height:100%;
     float:left;
 }
-.navImage {
+.navImg {
     min-width:50px;
     max-width:100%;
     max-height:100%;

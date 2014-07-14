@@ -1,80 +1,157 @@
 function PageLoader() {
-    var body = $("body");
-    var pages = {
-        errorPage: errorPage(),
-        Info: infoPage(),
-    };
+    testAppendContent();
 
+    var body = $("body");
+    var navbarHtml;
+    var pages = {
+        error: errorPage(),
+        info: infoPage(),
+    };
 
     //inserts the page to the dom (if required) and returns
     //the widget
     this.loadPage = function(toLoad, callback) {
         if(! pages[toLoad]) {
             controller.log("page not found!", 4);
-            toLoad = "errorPage";
+            toLoad = "error";
         } 
-        insertToDom(pages[toLoad]);
-        callback(pages[toLoad]);
+        callback(insertToDom(toLoad));
         return this;
     };
 
     function insertToDom(page) {
-        if(document.getElementById(page.attr("id")) === null) {
+        var domElement = document.getElementById(page + "Page");
+        if(domElement === null) {
             controller.log("page not in dom yet, inserting...", 1);
-            controller.log("html:" + page.html(), 1);
-            $("body").append(page);
+            controller.log("html:" + pages[page].html(), 1);
+            pages[page].on("vclick", ".navbar img", controller.navClick)
+                .on("dragstart", ".navbar img", function() {return false;});
+            $("body").append(pages[page]);
         }
-        return;
+        return pages[page];
     }
 
-    function navBar() {
+    function navbar() {
+        if(navbarHtml) {
+            return navbarHtml;
+        }
+
         var postfix = ".png";
         var prefix = "css/images/Button_";
-        var buttons = ["Info", "World", "Broadcast", "Friends", "More"];
-        var nav = getElement("div", {class: "navBar"}); //, "data-role": "navbar"});
+        var buttons = ["info", "World", "Broadcast", "Friends", "More"];
+        var footerOptions = {
+            class: "footer",
+            "data-position": "fixed",
+            "data-id": "menu",
+            "data-tap-toggle": false,
+            "data-role": "footer"
+        };
+        var footer = createElement("div", footerOptions);
+        var nav = createElement("div", {class: "navbar"}); //, "data-role": "navbar"});
+
+        var imgContainer = createElement("div", {class: "navImgContainer"});
+        var imgOptions = {class:"navImg",src: "", "data-link-to": ""};
+        var navHtml = "";
 
         //populate the nav bar with nav images
         if(Modernizr.svg) {
             postfix = ".svg";
         } 
         for(var i = 0; i < buttons.length; i++) {
-            var imgContainer = getElement('div', {class: "navImageContainer"});
-            var img = getElement("img", {class: "navImage",
-                src: prefix + buttons[i] + postfix,
-                "data-linkto": buttons[i]});
-            img.on("vmousedown", controller.navClick);
-            imgContainer.append(img);
-            nav.append(imgContainer);
+            var img;
+            imgOptions.src = prefix + buttons[i] + postfix;
+            imgOptions["data-link-to"] = buttons[i];
+            img = createElement("img", imgOptions);
+            navHtml += appendContent(imgContainer, img);
         }
-        controller.log("nav html: " + nav.html(), 1);
+        nav = appendContent(nav, navHtml);
+        footer = appendContent(footer, nav);
+        controller.log("nav html: " + footer, 1);
 
-        //put the nav into a footer container
-        var container = getElement("div", {class: "navContainer", "data-position": "fixed", 
-            "data-id":"menu", "data-tap-toggle":false, "data-role":"footer"});
-        container.append(nav);
-        return container;
+        navbarHtml = footer;
+
+        return footer;
     }
 
     //to do make this a dialog
     function errorPage(){
         controller.log("making error page", 3);
+        var pageOptions = {
+            "data-role": "page",
+            id: "errorPage"
+        };
+        var contentOptions = {
+            "data-role": "content",
+            id: "errorPageContent"
+        };
 
-        var page = getDiv("errorPage", "page");
-        var content = getDiv("errorContent", "content");
-        var text = document.createElement("h1").innerHTML = "Error Loading Page!";
-        content.append(text);
-        page.append([content, navBar()]);
-        return page;
+        var page = createElement("div", pageOptions);
+        var contentDiv = createElement("div", contentOptions);
+        var content  = createElement("h1", {}, "Error Loading Page!");
+        contentDiv = appendContent(contentDiv, content );
+        page = appendContent(page, [contentDiv, navbar()]);
+        return $(page);
     }
 
     function infoPage() {
-        var page = getDiv("infoPage", "page");
-        var content = getDiv("infoPageContent", "content");
-        var text = document.createElement("h1").innerHTML = "Info bro!";
-        content.append(text);
-        page.append([content, navBar()]);
-        return page;
+        var pageOptions = {
+            "data-role": "page",
+            id: "infoPage"
+        };
+        var contentOptions = {
+            "data-role": "content",
+            id:"infoPageContent"
+        };
+        var page = createElement("div", pageOptions);
+        var contentDiv = createElement("div", contentOptions);
+        var content  = createElement("h1", {}, "info Bro!");
+
+        contentDiv = appendContent(contentDiv, content );
+        page = appendContent(page, [contentDiv, navbar()]);
+        return $(page);
     }
 
+    function createElement(type, options, content) {
+        var element = "<" + type; 
+        for(var key in options) {
+            var obj = options[key];
+            if(options.hasOwnProperty(key)) {
+                element += " " + key + '="' + options[key] + '"';
+            }
+        }
+        element += ">" + (content || "")  + "</" + type + ">";
+        return element;
+    }
+
+    function appendContent(existing, toAppend) {
+        var regex = /<\/[^>]+>$/;
+        var newStr = existing.replace(regex, function(match) {
+            return arrayToOneString(toAppend) + match;
+            });
+        if(toAppend !== undefined && newStr === existing) {
+            return existing + toAppend;
+        }
+        return newStr;
+    }
+    function testAppendContent() {
+        var str1 = "<div><h1>please be here</h1>";
+        var str2 = "hello";
+        var str3 = appendContent(str1 + "</div>", str2); 
+        if(str3 !== str1 + str2 + "</div>") {
+            console.log("appendContent test failed");
+        }
+        return;
+    }
+
+    function arrayToOneString(array) {
+        if(typeof array === "string") {
+            return array;
+        }
+        var str = "";
+        for(var i = 0; i < array.length; i++) {
+            str += "" + array[i];
+        }
+        return str;
+    }
     return this;
 }
