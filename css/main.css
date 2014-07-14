@@ -12,6 +12,28 @@ html, body {
     right: 0;
     top: 0;
 }
+#lossTimer {
+    width:100%;
+    padding:10px;
+    background-image: -webkit-gradient(
+        linear,
+        right top,
+        left bottom,
+        color-stop(0, #662D92),
+        color-stop(0.52, #684185),
+        color-stop(1, #4A2466)
+    );
+    background-image: -o-linear-gradient(left bottom, #662D92 0%, #684185 52%, #4A2466 100%);
+    background-image: -moz-linear-gradient(left bottom, #662D92 0%, #684185 52%, #4A2466 100%);
+    background-image: -webkit-linear-gradient(left bottom, #662D92 0%, #684185 52%, #4A2466 100%);
+    background-image: -ms-linear-gradient(left bottom, #662D92 0%, #684185 52%, #4A2466 100%);
+    background-image: linear-gradient(to left bottom, #662D92 0%, #684185 52%, #4A2466 100%);
+    text-align:center;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+
+}
 /*
 #youLosePopup {
     height:100%;

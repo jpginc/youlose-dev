@@ -1,6 +1,7 @@
 function dayHourMinSec(date1, date2) {
     if(! isAnInt(date1) || ! isAnInt(date2)) {
-            return undefined;
+        controller.log("date 1 or 2 isn't an int", 1);
+        return undefined;
     }
     // get total seconds between the times
     var delta = Math.abs(date1 - date2) / 1000;
@@ -25,10 +26,18 @@ function isAnInt(number) {
     return !isNaN(number) && parseInt(Number(number)) == number;
 }
 function niceString(dhmsArray) {
+    if(dhmsArray === undefined) {
+        controller.log("htmls array is undeinfed)");
+        return "You've never LOST!";
+    }
     for(var i =0; i < 4; i++) {
         if(! isAnInt(dhmsArray[i])) {
-            return undefined;
+            controller.log("invalid element in dhmsArray", 1);
+            return "You've never LOST!";
         }
     }
     return dhmsArray[0] + "D : " + dhmsArray[1] + "H : " + dhmsArray[2] + "m : " + dhmsArray[3] + "s";
+}
+function getNiceTimeString(from) {
+    return niceString(dayHourMinSec(new Date().getTime(), from));
 }

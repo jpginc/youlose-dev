@@ -72,6 +72,24 @@ function PageLoader(conteroller) {
 
         return footer;
     }
+    
+    function lossTimer(user) {
+        var lossString = getNiceTimeString(user.getLastLoss());
+        var pageOptions = {
+            "data-role": "header",
+            id: "lossTimer"
+        };
+        var contentOptions = {
+            "data-role": "content",
+            id: "errorPageContent"
+        };
+
+        var page  = createElement("div", pageOptions);
+        var content  = createElement("h1", {}, lossString);
+        page = appendContent(page, content);
+        return page;
+
+    }
 
     //to do make this a dialog
     function errorPage(){
@@ -111,7 +129,7 @@ function PageLoader(conteroller) {
         return $(page);
     }
 
-    this.lostBtn = function() {
+    this.lostBtn = function(user) {
         var pageOptions = {
             "data-role": "popup",
             id: "youLosePopup",
@@ -128,7 +146,7 @@ function PageLoader(conteroller) {
         var contentWrapper= createElement("div", {id: "btnShadow"});
         var content = createElement("img", imgOptions);
         contentWrapper = appendContent(contentWrapper, content);
-        popup = $(appendContent(popup, contentWrapper));
+        popup = $(appendContent(popup, [lossTimer(user), contentWrapper]));
         popup.popup();
         popup.on("vclick","img", function() { 
             controller.doLoss(popup);

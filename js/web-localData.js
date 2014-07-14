@@ -1,32 +1,50 @@
-var youLoseLocalData = (function() {
+function LocalData() {
     var expiry = new Date().setTime(new Date().getTime() + 1000*60*60*24*365);
+    var cookieKeys = ["user"];
 
-    function loadData() {
-        savedData = document.cookie;
-        if(savedData) {
-            savedData = savedData.split(";");
+    this.loadData = function() {
+        var temp = document.cookie; 
+        savedData = {};
+        temp = temp.split(";=");
+
+        for(var i = 0; i < cookieKeys.length; i++) {
+            try {
+                savedData[cookieKeys[i]] = $.parseJSON(getCookieFromKey(cookieKeys[i], temp));
+            } catch(err) {
+                controller.log("error parsing json!", 8);
+            }
         }
         return this;
-    }
+    };
 
-    function fetchData(key){
+    this.get = function(key) {
         if(!savedData) {
-                loadData();
+                this.loadData();
             }
-        return savedData.key;
-    }
+        controller.log("getting " +key, 1);
+        controller.log("has " + savedData[key], 1);
+        return savedData[key];
+    };
 
-    function saveData(key, value) {
+    this.save = function(key, value) {
         if(!savedData) {
-            loadData();
+            this.loadData();
         }
         savedData[key] = value;
-        doument.cookie = key + "=" + value +"; " + expiry;
-        return;
+        document.cookie = key + "=" + JSON.stringify(value);
+        return this;
+    };
+
+    function getCookieFromKey(key, ca) {
+        var name = key + "=";
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1);
+            if (c.indexOf(name) != -1) return c.substring(name.length,c.length);
+        }
+        return "";
     }
 
-    return {
-        fetchData : fetchData,
-        saveData : saveData
-    };
-})();
+    var savedData;
+    return this;
+}

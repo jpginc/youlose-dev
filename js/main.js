@@ -2,7 +2,9 @@ var controller = (function() {
     var errorReportingLevel = 0;
     var isInitialized = false;
     var view;
+    var localData;
     var pageLoader;
+    var user;
     var ignoreClicks = false;
 
     //priority 10 is the highest, 1 is the lowes
@@ -17,15 +19,18 @@ var controller = (function() {
         if(isInitialized) {
             return false;
         }
-        log("initializing..", 1);
         isInitialized = true;
+
+        log("initializing..", 1);
+        localData = new LocalData();
+        user = new User(publicMethods);
         view = new View(publicMethods);
         log("view done", 1);
         pageLoader = new PageLoader(publicMethods);
         log("page loader done", 1);
         pageLoader.loadPage("user", view.change);
         log("initializing done", 1);
-        view.lostBtn(pageLoader.lostBtn()).showBtn();
+        view.lostBtn(pageLoader.lostBtn(user)).showBtn();
         return publicMethods;
     }
 
@@ -50,16 +55,18 @@ var controller = (function() {
         return publicMethods;
     }
 
-    function fetchData(key) {
+    function get(key) {
+        return localData.get(key);
     }
 
-    function saveData(key) {
+    function save(key, value) {
+        return localData.save(key, value);
     }
 
     function doLoss(btn) {
         log("lose!", 1);
+        user.lose();
         view.pressBtn(btn);
-        //view.lostBtn(btn, true);
     }
     
     var publicMethods = {
@@ -67,7 +74,8 @@ var controller = (function() {
         initialize: initialize,
         loadPage: loadPage,
         resume: resume,
-        fetchData: fetchData,
+        get: get,
+        save: save,
         navClick: navClick,
         doLoss: doLoss
     };
