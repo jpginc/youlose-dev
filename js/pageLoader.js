@@ -122,7 +122,8 @@ function PageLoader(conteroller) {
         };
         var page = createElement("div", pageOptions);
         var contentDiv = createElement("div", contentOptions);
-        var content  = createElement("h1", {}, "info Bro!");
+        var content  = createElement("h1", {}, 
+                (Modernizr.svg ? "svg's should work" : "info Bro!"));
 
         contentDiv = appendContent(contentDiv, content );
         page = appendContent(page, [contentDiv, navbar()]);
