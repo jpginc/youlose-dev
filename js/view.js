@@ -19,9 +19,9 @@ function View(controller) {
     };
 
     this.pressBtn = function(btn) {
-        btn.find("img").addClass("clicked");
+        btn.find("#btnShadow").addClass("clicked");
         setTimeout(function() {
-            btn.find("img").removeClass("clicked");
+            btn.find("#btnShadow").removeClass("clicked");
             setTimeout(function() {
                 btn.popup("close");
             }, 200);

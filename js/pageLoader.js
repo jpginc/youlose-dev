@@ -125,8 +125,10 @@ function PageLoader(conteroller) {
         };
 
         var popup = createElement("div", pageOptions);
+        var contentWrapper= createElement("div", {id: "btnShadow"});
         var content = createElement("img", imgOptions);
-        popup = $(appendContent(popup, content));
+        contentWrapper = appendContent(contentWrapper, content);
+        popup = $(appendContent(popup, contentWrapper));
         popup.popup();
         popup.on("vclick","img", function() { 
             controller.doLoss(popup);
