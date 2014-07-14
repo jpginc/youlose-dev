@@ -50,4 +50,5 @@
     <access origin="http://127.0.0.1*" />
 
     <gap:plugin name="org.apache.cordova.file" version="1.0.1" />
+    <preference name="AndroidPersistentFileLocation" value="Internal" />
 </widget>

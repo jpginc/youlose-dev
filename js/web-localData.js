@@ -2,7 +2,7 @@ function LocalData() {
     var expiry = new Date().setTime(new Date().getTime() + 1000*60*60*24*365);
     var cookieKeys = ["user"];
 
-    this.loadData = function() {
+    this.initialize = function() {
         var temp = document.cookie; 
         savedData = {};
         temp = temp.split(";=");
@@ -19,7 +19,7 @@ function LocalData() {
 
     this.get = function(key) {
         if(!savedData) {
-                this.loadData();
+                this.initialize();
             }
         controller.log("getting " +key, 1);
         controller.log("has " + savedData[key], 1);
@@ -28,7 +28,7 @@ function LocalData() {
 
     this.save = function(key, value) {
         if(!savedData) {
-            this.loadData();
+            this.initialize();
         }
         savedData[key] = value;
         document.cookie = key + "=" + JSON.stringify(value);
