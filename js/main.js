@@ -83,16 +83,3 @@ var controller = (function() {
     return publicMethods;
 })();
 
-if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|Windows)/)) {
-    // will only work on mobile devices
-    controller.log("mobile startup", 1);
-    document.addEventListener("deviceready", controller.initialize, false);
-    document.addEventListener("resume", controller.resume, false);
-} else {
-    //for desktop
-    $(document).ready(function() {
-        controller.log("desktop startup", 1);
-        
-        controller.initialize();
-    });
-}

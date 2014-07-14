@@ -18,8 +18,10 @@ libraryjsFiles = js/library/jquery-1.11.1.min.js\
 				 js/library/jquery.mobile-1.4.3.min.js\
 				 js/library/modernizr.js
 webjsFiles = ${commonjsFiles}\
+			 js/web-startup.js\
 			 js/web-localData.js
 mobjsFiles = ${commonjsFiles}\
+			 js/mob-startup.js\
 			 js/mob-localData.js
 
 commoncssFiles = css/jquery.mobile-1.4.3.min.css\
