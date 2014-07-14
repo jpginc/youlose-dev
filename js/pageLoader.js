@@ -1,4 +1,4 @@
-function PageLoader() {
+function PageLoader(conteroller) {
     testAppendContent();
 
     var body = $("body");
@@ -24,8 +24,8 @@ function PageLoader() {
         if(domElement === null) {
             controller.log("page not in dom yet, inserting...", 1);
             controller.log("html:" + pages[page].html(), 1);
-            pages[page].on("vclick", ".navbar img", controller.navClick)
-                .on("dragstart", ".navbar img", function() {return false;});
+            pages[page].on("vclick", ".navbar img", controller.navClick);
+            pages[page].on("dragstart", ".navbar img", function() {return false;});
             $("body").append(pages[page]);
         }
         return pages[page];
@@ -110,6 +110,30 @@ function PageLoader() {
         page = appendContent(page, [contentDiv, navbar()]);
         return $(page);
     }
+
+    this.lostBtn = function() {
+        var pageOptions = {
+            "data-role": "popup",
+            id: "youLosePopup",
+            "data-overlay-theme": "b"
+        };
+
+        var imgOptions = {
+            alt: "youLOST Button",
+            src: "css/images/button." + (Modernizr.svg ? "svg" : "png"),
+            id: "youLoseBtn"
+        };
+
+        var popup = createElement("div", pageOptions);
+        var content = createElement("img", imgOptions);
+        popup = $(appendContent(popup, content));
+        popup.popup();
+        popup.on("vclick","img", function() { 
+            controller.doLoss(popup);
+            });
+        popup.on("dragstart", "img", function() {return false;});
+        return popup;
+    };
 
     function createElement(type, options, content) {
         var element = "<" + type; 

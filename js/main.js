@@ -19,13 +19,13 @@ var controller = (function() {
         }
         log("initializing..", 1);
         isInitialized = true;
-        view = new View(this);
+        view = new View(publicMethods);
         log("view done", 1);
-        pageLoader = new PageLoader();
+        pageLoader = new PageLoader(publicMethods);
         log("page loader done", 1);
-        view.loading();
         pageLoader.loadPage("user", view.change);
         log("initializing done", 1);
+        view.lostBtn(pageLoader.lostBtn()).showBtn();
         return publicMethods;
     }
 
@@ -37,6 +37,7 @@ var controller = (function() {
 
     function navClick(event) {
         if(ignoreClicks) {
+            log("ignoring a click", 1);
             return;
         }
         ignoreClicks = true;
@@ -54,6 +55,12 @@ var controller = (function() {
 
     function saveData(key) {
     }
+
+    function doLoss(btn) {
+        log("lose!", 1);
+        view.pressBtn(btn);
+        //view.lostBtn(btn, true);
+    }
     
     var publicMethods = {
         log: log,
@@ -61,7 +68,8 @@ var controller = (function() {
         loadPage: loadPage,
         resume: resume,
         fetchData: fetchData,
-        navClick: navClick
+        navClick: navClick,
+        doLoss: doLoss
     };
 
     return publicMethods;
@@ -69,9 +77,14 @@ var controller = (function() {
 
 if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
     // will only work on mobile devices
+    controller.log("mobile startup", 1);
     document.addEventListener("deviceready", controller.initialize, false);
     document.addEventListener("resume", controller.resume, false);
 } else {
     //for desktop
-    $(document).ready(controller.initialize);
+    $(document).ready(function() {
+        controller.log("desktop startup", 1);
+        
+        controller.initialize();
+    });
 }
