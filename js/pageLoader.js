@@ -54,7 +54,7 @@ function PageLoader(conteroller) {
         var navHtml = "";
 
         //populate the nav bar with nav images
-        if(Modernizr.svg) {
+        if(useSvg()) {
             postfix = ".svg";
         } 
         for(var i = 0; i < buttons.length; i++) {
@@ -123,7 +123,7 @@ function PageLoader(conteroller) {
         var page = createElement("div", pageOptions);
         var contentDiv = createElement("div", contentOptions);
         var content  = createElement("h1", {}, 
-                (Modernizr.svg ? "svg's should work" : "info Bro!"));
+                (useSvg() ? "svg's should work" : "info Bro!"));
 
         contentDiv = appendContent(contentDiv, content );
         page = appendContent(page, [contentDiv, navbar()]);
@@ -198,5 +198,9 @@ function PageLoader(conteroller) {
         }
         return str;
     }
+    function useSvg() {
+        return Modernizr.svg && ! navigator.userAgent.match(/Windows/); 
+    }
+
     return this;
 }
