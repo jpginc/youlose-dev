@@ -64,9 +64,9 @@ androidicons:iconscommon
 	cp icons/res/screen/android/* ${androidDir}/res/screen/android
 #-----------------------------     needed files      ------------------------------------------------
 common:
-	cat i-config.xml > ${iosDir}/config.xml
-	cat a-config.xml > ${androidDir}/config.xml
-	cat w-config.xml > ${winDir}/config.xml
+	cat config.xml > ${iosDir}/config.xml
+	cat config.xml > ${androidDir}/config.xml
+	cat config.xml > ${winDir}/config.xml
 	cat html/licence html/index.html | tee ${allDirs}/index.html >/dev/null
 
 #-----------------------------     js       --------------------------------------------------------

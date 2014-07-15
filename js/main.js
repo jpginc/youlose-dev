@@ -1,5 +1,5 @@
 var controller = (function() {
-    var errorReportingLevel = 0;
+    var errorReportingLevel = 2;
     var isInitialized = false;
     var view;
     var localData;
@@ -51,7 +51,9 @@ var controller = (function() {
     }
 
     function resume() {
-        alert("resuming!");
+        if(moreThan5Min(user.getLastLoss)) {
+            view.showBtn();
+        }
         return publicMethods;
     }
 
@@ -66,8 +68,29 @@ var controller = (function() {
     function doLoss() {
         log("lose!", 1);
         view.pressBtn(user.getLastLoss());
-        user.lose();
+        getLocation(user.lose, user.lose);
     }
+    function getLocation(successCallback, errorCallback) {
+        var options = { 
+            maximumAge: 3000, 
+            timeout: 5000, 
+            enableHighAccuracy: true 
+        };
+        if(navigator.geolocation) {
+            var locationTimeoutFix = setTimeout(errorCallback, 7000);
+
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                clearTimeout(locationTimeoutFix);
+                successCallback(pos);
+            }, function(error) {
+                clearTimeout(locationTimeoutFix);
+                errorCallback(error);
+            });
+        } else {
+            errorCallback();
+        }
+    }
+
     function getLastLoss() {
         return user.getLastLoss();
     }

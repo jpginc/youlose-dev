@@ -10,3 +10,6 @@ function createElement(type, options, content) {
     return element;
 }
 
+function moreThan5Min(time) {
+    return new Date().getTime - time < 1000 * 50 * 5;
+}
