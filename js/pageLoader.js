@@ -37,8 +37,9 @@ function PageLoader(conteroller) {
             return navbarHtml;
         }
 
-        var postfix = '.png) no-repeat scroll center center / auto 100% transparent;"';
-        var prefix = 'background:url(css/images/Button_';
+        var fileType = ".png";
+        var postfix = ') no-repeat scroll center center / auto 100% transparent;"';
+        var prefix = "background:url(css/images/Button_";
         var buttons = ["info", "World", "Broadcast", "Friends", "More"];
         var footerOptions = {
             class: "footer",
@@ -55,11 +56,11 @@ function PageLoader(conteroller) {
 
         //populate the nav bar with nav images
         if(useSvg()) {
-            postfix = '.svg) no-repeat scroll center center / auto 100% transparent;"';
+            fileType = ".svg";
         } 
         for(var i = 0; i < buttons.length; i++) {
             var img;
-            imgOptions.style = prefix + buttons[i] + postfix;
+            imgOptions.style = prefix + buttons[i] + fileType + postfix;
             imgOptions["data-link-to"] = buttons[i];
             navHtml += createElement("div", imgOptions);
         }
@@ -137,23 +138,30 @@ function PageLoader(conteroller) {
             "data-overlay-theme": "b"
         };
 
+        var fileType = ".png";
+        if(useSvg()) {
+            fileType = ".svg";
+        } 
+        var postfix = ') no-repeat scroll center center / auto 100% transparent;"';
+        var prefix = "background:url(css/images/Button_Lost";
+
         var imgOptions = {
             alt: "youLOST Button",
-            src: "css/images/Button_Lost." + (useSvg() ? "svg" : "png"),
-            id: "youLoseBtn"
+            id: "youLoseBtn",
+            style: prefix + fileType + postfix
         };
 
         var popup = createElement("div", pageOptions);
         //var contentWrapper= createElement("div", {id: "btnShadow"});
-        var content = createElement("img", imgOptions);
+        var content = createElement("div", imgOptions);
         //contentWrapper = appendContent(contentWrapper, content);
         popup = $(appendContent(popup, [lossTimer(user), content]));
         jqueryTimerDiv = popup.find("#lossTimer");
         popup.popup();
-        popup.on("vclick","img", function() { 
+        popup.on("vclick", "#youLoseBtn", function() { 
             controller.doLoss(popup);
             });
-        popup.on("dragstart", "img", function() {return false;});
+        popup.on("dragstart", "#youLoseBtn", function() {return false;});
         popup.on("popupafteropen", function() {
             clearInterval(lostTimerTimer);
             lostTimerTimer = setInterval(function() {
@@ -167,6 +175,7 @@ function PageLoader(conteroller) {
     };
 
     function updateTimer(user, timerDiv) {
+        controller.log("timer is on" + getNiceTimeString(user.getLastLoss()), 1);
         timerDiv.html(createElement("h1",{},getNiceTimeString(user.getLastLoss())));
         return;
     }
