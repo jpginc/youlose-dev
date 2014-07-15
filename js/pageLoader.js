@@ -3,6 +3,7 @@ function PageLoader(conteroller) {
 
     var body = $("body");
     var navbarHtml;
+    var lostTimerTimer;
     var pages = {
         error: errorPage(),
         info: infoPage(),
@@ -129,6 +130,7 @@ function PageLoader(conteroller) {
     }
 
     this.lostBtn = function(user) {
+        var jqueryTimerDiv;
         var pageOptions = {
             "data-role": "popup",
             id: "youLosePopup",
@@ -146,13 +148,28 @@ function PageLoader(conteroller) {
         var content = createElement("img", imgOptions);
         //contentWrapper = appendContent(contentWrapper, content);
         popup = $(appendContent(popup, [lossTimer(user), content]));
+        jqueryTimerDiv = popup.find("#lossTimer");
         popup.popup();
         popup.on("vclick","img", function() { 
             controller.doLoss(popup);
             });
         popup.on("dragstart", "img", function() {return false;});
+        popup.on("popupafteropen", function() {
+            clearInterval(lostTimerTimer);
+            lostTimerTimer = setInterval(function() {
+                updateTimer(user, jqueryTimerDiv);
+            }, 1000);
+        });
+        popup.on("popupafterclose", function() {
+            clearInterval(lostTimerTimer);
+        });
         return popup;
     };
+
+    function updateTimer(user, timerDiv) {
+        timerDiv.html(createElement("h1",{},getNiceTimeString(user.getLastLoss())));
+        return;
+    }
 
     function createElement(type, options, content) {
         var element = "<" + type; 

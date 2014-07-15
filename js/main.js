@@ -6,6 +6,7 @@ var controller = (function() {
     var pageLoader;
     var user;
     var ignoreClicks = false;
+    var timers = [];
 
     //priority 10 is the highest, 1 is the lowes
     function log(toLog, priority) {
@@ -36,6 +37,10 @@ var controller = (function() {
 
     function loadPage(toLoad) {
         view.loading();
+        for(var i = 0; i < timers.length; i++) {
+            clearInterval(timers[i]);
+        }
+        timers = [];
         pageLoader.loadPage(toLoad, view.change);
         return publicMethods;
     }
@@ -68,7 +73,16 @@ var controller = (function() {
         user.lose();
         view.pressBtn(btn);
     }
-    
+
+    function timedUpdate(updateFunction, timeout) {
+        if(updateFunction && timeout) {
+            timers.push(setInterval(updateFunction, timeout));
+        } else {
+            log("an invalid update function or timeout", 4);
+        }
+        return publicMethods;
+    }
+
     var publicMethods = {
         log: log,
         initialize: initialize,
@@ -77,9 +91,8 @@ var controller = (function() {
         get: get,
         save: save,
         navClick: navClick,
-        doLoss: doLoss
+        doLoss: doLoss,
     };
 
     return publicMethods;
 })();
-
