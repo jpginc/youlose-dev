@@ -5,12 +5,27 @@ function View(controller) {
     var myself = this;
 
     //a jquery dom object that is already inserted into the dom
-    this.change = function(to) {
+    this.change = function(to, type) {
+        var options = {
+            changeHash: false,
+        };
+        switch(type) {
+            case "page":
+                options.transition = "none";
+                break;
+            case "menu":
+                options.transition = "slideup";
+                break;
+            case "submenu":
+                options.transition = "slide";
+                break;
+        }
+
         $.mobile.loading("hide");
         controller.log("about to change!", 1);
-        $.mobile.pageContainer.pagecontainer("change", to, {changeHash: false, transition: "none"});
+        $.mobile.pageContainer.pagecontainer("change", to, options);
         controller.log("changed", 1);
-        return this;
+        return myself;
     };
 
     this.pressBtn = function(lastLoss) {
@@ -26,7 +41,7 @@ function View(controller) {
             timeCountdown(step);
         }, 1000/24);
 */
-        return this;
+        return myself;
     };
 
 /*
@@ -71,7 +86,7 @@ function View(controller) {
             clearInterval(intervalHandle);
         });
 
-        return this;
+        return myself;
     };
 
     function updateTimer() {
@@ -85,6 +100,7 @@ function View(controller) {
         if(! lostBtnHandle) {
             initLostBtn();
         }
+        updateTimer();
         var popupOptions = {
             dismissible: false,
             history: false,
@@ -98,7 +114,7 @@ function View(controller) {
 
         if(lostBtnHandle === undefined) {
             controller.log("lostBtn undefined", 5);
-            return this;
+            return myself;
         }
         if(dismiss) {
             lostBtnHandle.popup("close");
@@ -112,7 +128,7 @@ function View(controller) {
                 }, 500);
             }, 400);
         }
-        return this;
+        return myself;
     };
 
 
@@ -122,7 +138,7 @@ function View(controller) {
         } else {
             $.mobile.loading("show");
         }
-        return this;
+        return myself;
     };
 
     return this;

@@ -1,34 +1,106 @@
 function PageLoader(conteroller) {
-    testAppendContent();
-
+    var myself = this;
     var body = $("body");
     var navbarHtml;
-    var pages = {
-        error: errorPage(),
-        info: infoPage(),
+    var pages = { 
+        page: {
+            error: errorPage(),
+            user: infoPage(),
+        },
+        menu: {
+            world: worldStats(),
+        },
+        submenu: {
+
+        },
     };
 
     //inserts the page to the dom (if required) and returns
     //the widget
     this.loadPage = function(toLoad, callback) {
-        if(! pages[toLoad]) {
+        var split = toLoad.split("-");
+        var key = split[0];
+        var value = split[1];
+
+        if(! pages[key] || ! pages[key][value]) {
             controller.log("page not found!", 4);
-            toLoad = "error";
+            key = "page";
+            value = "error";
         } 
-        callback(insertToDom(toLoad));
-        return this;
+        //pages[key][value] = insertToDom(pages[key][value], toLoad);
+        //callback(pages[key][value]);
+        callback(insertToDom(pages[key][value], toLoad), key);
+        return myself;
     };
 
-    function insertToDom(page) {
-        var domElement = document.getElementById(page + "Page");
+    function insertToDom(page, name) {
+        var domElement = document.getElementById(name + "Page");
         if(domElement === null) {
             controller.log("page not in dom yet, inserting...", 1);
-            controller.log("html:" + pages[page].html(), 1);
-            pages[page].on("vclick", ".navImg", controller.navClick);
-            pages[page].on("dragstart", ".navImg", function() {return false;});
-            $("body").append(pages[page]);
+            controller.log("html:" + page.html());
+            page.on("vclick", ".navImg", controller.navClick);
+            //pages.page[page].on("dragstart", ".navImg", function() {return false;});
+            $("body").append(page);
         }
-        return pages[page];
+        return page;
+    }
+
+    function worldStats() {
+        var menuItems = {
+            "Map" : "page-mapTest",
+        };
+
+        var page = getPage("worldPage", createElement("div", {class:"popupMenuOuterWrapper"},
+                    createElement("div", {class:"popupMenuInnerWrapper"},
+                        getHeader("worldPageHeader", "World Stats") +
+                        getContent("worldPageContent", getList(menuItems)) + 
+                        createElement("div", {class:"popupMenuNavBuffer"}) + 
+                        navbar())));
+        return $(page);
+    }
+
+    function getList(obj, type) {
+        var list = createElement(type ? type : "ul", {"data-role":"listview"});
+        var listItems = "";
+        for(var key in obj) {
+            var options = {
+                "data-link-to": obj[key],
+            };
+            listItems += createElement("li", options, '<a href="#">' + key + "</a>");
+        }
+        list = appendContent(list, listItems);
+
+        return list;
+    }
+
+    function getGeneric(role, id, content, otherOptions) {
+        var options = {
+            "data-role": role
+        };
+        if(id) {
+            options.id = id;
+        }
+        if(typeof otherOptions === "object") {
+            $.extend(options, otherOptions);
+        }
+        if(content === undefined) {
+            content = "";
+        }
+        return createElement("div", options, content);
+    }
+
+    function getPage(id, content, otherOptions) {
+        return getGeneric("page", id, content, otherOptions);
+    }
+
+    function getHeader(id, content, otherOptions) {
+        if(content !== undefined) {
+            content = createElement("h1", {}, content);
+        }
+        return getGeneric("header", id, content, otherOptions);
+    }
+    function getContent(id, content, otherOptions) {
+        return getGeneric("content", id, content, otherOptions);
     }
 
     function navbar() {
@@ -39,7 +111,14 @@ function PageLoader(conteroller) {
         var fileType = ".png";
         var postfix = ')"';
         var prefix = "background-image:url(css/images/Button_";
-        var buttons = ["info", "World", "Broadcast", "Friends", "More"];
+        var buttons = {
+            "page-user": "Info",
+            "menu-world": "World",
+            "page-share": "Broadcast",
+            "page-friends": "Friends",
+            "menu-more": "More"
+        };
+
         var footerOptions = {
             class: "footer",
             "data-position": "fixed",
@@ -57,11 +136,13 @@ function PageLoader(conteroller) {
         if(useSvg()) {
             fileType = ".svg";
         } 
-        for(var i = 0; i < buttons.length; i++) {
+        for(var key in buttons) {
+            if(buttons.hasOwnProperty(key)) {
             var img;
-            imgOptions.style = prefix + buttons[i] + fileType + postfix;
-            imgOptions["data-link-to"] = buttons[i];
+            imgOptions.style = prefix + buttons[key] + fileType + postfix;
+            imgOptions["data-link-to"] = key;
             navHtml += createElement("div", imgOptions);
+            }
         }
         nav = appendContent(nav, navHtml);
         footer = appendContent(footer, nav);
@@ -72,60 +153,20 @@ function PageLoader(conteroller) {
         return footer;
     }
     
-    function lossTimer(user) {
-        var lossString = getNiceTimeString(user.getLastLoss());
-        var pageOptions = {
-            "data-role": "header",
-            id: "lossTimer"
-        };
-        var contentOptions = {
-            "data-role": "content",
-            id: "errorPageContent"
-        };
-
-        var page  = createElement("div", pageOptions);
-        var content  = createElement("p", {}, lossString);
-        page = appendContent(page, content);
-        return page;
-
-    }
-
     //to do make this a dialog
     function errorPage(){
-        controller.log("making error page", 3);
-        var pageOptions = {
-            "data-role": "page",
-            id: "errorPage"
-        };
-        var contentOptions = {
-            "data-role": "content",
-            id: "errorPageContent"
-        };
-
-        var page = createElement("div", pageOptions);
-        var contentDiv = createElement("div", contentOptions);
-        var content  = createElement("h1", {}, "Error Loading Page!");
-        contentDiv = appendContent(contentDiv, content );
-        page = appendContent(page, [contentDiv, navbar()]);
+        var page = getPage("errorPage",
+                getHeader("errorPageHeader", "ERROR") +
+                getContent("errorPageContent", "<p>Error Loading Page!" ) +
+                navbar());
         return $(page);
     }
 
     function infoPage() {
-        var pageOptions = {
-            "data-role": "page",
-            id: "infoPage"
-        };
-        var contentOptions = {
-            "data-role": "content",
-            id:"infoPageContent"
-        };
-        var page = createElement("div", pageOptions);
-        var contentDiv = createElement("div", contentOptions);
-        var content  = createElement("h1", {}, 
-                (useSvg() ? "svg's should work" : "info Bro!"));
-
-        contentDiv = appendContent(contentDiv, content );
-        page = appendContent(page, [contentDiv, navbar()]);
+        var page = getPage("infoPage",
+                getHeader("infoPageHeader", "My Page") + 
+                getContent("infoPageContent", "<p>This is where something will go</p>") +
+                navbar());
         return $(page);
     }
 
@@ -154,11 +195,12 @@ function PageLoader(conteroller) {
         //var contentWrapper= createElement("div", {id: "btnShadow"});
         var content = createElement("div", imgOptions);
         //contentWrapper = appendContent(contentWrapper, content);
-        popup = $(appendContent(popup, [lossTimer(user), content]));
+        popup = $(appendContent(popup, [getHeader("lossTimer"), content]));
         return popup;
     };
 
     function appendContent(existing, toAppend) {
+        //the last closing brace 
         var regex = /<\/[^>]+>$/;
         var newStr = existing.replace(regex, function(match) {
             return arrayToOneString(toAppend) + match;
@@ -168,6 +210,7 @@ function PageLoader(conteroller) {
         }
         return newStr;
     }
+/*
     function testAppendContent() {
         var str1 = "<div><h1>please be here</h1>";
         var str2 = "hello";
@@ -177,7 +220,7 @@ function PageLoader(conteroller) {
         }
         return;
     }
-
+*/
     function arrayToOneString(array) {
         if(typeof array === "string") {
             return array;

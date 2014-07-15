@@ -88,9 +88,11 @@ html, body {
     -o-transition : all 0.2s linear;
     transition : all 0.2s linear;
 }
+/*
 .ui-page {
     -webkit-backface-visibility: hidden;
 }
+*/
 .footer {
     height:10%;
     min-height:50px;

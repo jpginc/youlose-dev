@@ -1,0 +1,16 @@
+.popupMenuOuterWrapper, .popupMenuInnerWrapper {
+    width:100%;
+    position:absolute;
+}
+.popupMenuOuterWrapper {
+    height:95%;
+}
+
+.popupMenuInnerWrapper {
+    bottom:0px;
+}
+.popupMenuNavBuffer {
+    min-height:50px;
+    height:10%;
+    border:none;
+}

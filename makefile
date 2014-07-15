@@ -24,8 +24,11 @@ mobjsFiles = ${commonjsFiles}\
 			 js/mob-startup.js\
 			 js/mob-localData.js
 
-commoncssFiles = css/jquery.mobile-1.4.3.min.css\
-				 css/main.css
+commoncssFiles = css/main.css\
+				 css/popupMenu.css
+
+cssLibraryFiles = css/jquery.mobile-1.4.3.min.css 
+
 
 #---------------------------      create/clean dirs   ----------------------------------------------------
 rebuild:dirs icons all
@@ -77,6 +80,7 @@ mobjs:
 webjs:
 	cat ${webjsFiles} | tee ${webDir}/js/main.js >/dev/null
 #---------------------------      css      --------------------------------------------------------
-csss:${commoncssFiles}
-	echo ${allDirs}/css | xargs -n 1 cp ${commoncssFiles}
+csss:
+	cat ${commoncssFiles} | tee ${allDirs}/css/main.css >/dev/null
+	echo ${allDirs}/css | xargs -n 1 cp ${cssLibraryFiles}
 	echo ${allDirs}/css/images/ | xargs -n 1 cp css/images/* -r
