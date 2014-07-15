@@ -115,4 +115,8 @@ html, body {
     float:left;
 }
 
-
+.navImg, #youLoseBtn {
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+}

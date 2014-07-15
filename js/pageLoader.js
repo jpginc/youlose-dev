@@ -37,8 +37,8 @@ function PageLoader(conteroller) {
         }
 
         var fileType = ".png";
-        var postfix = ') no-repeat scroll center center / auto auto transparent;"';
-        var prefix = "background:url(css/images/Button_";
+        var postfix = ')"';
+        var prefix = "background-image:url(css/images/Button_";
         var buttons = ["info", "World", "Broadcast", "Friends", "More"];
         var footerOptions = {
             class: "footer",
@@ -141,8 +141,8 @@ function PageLoader(conteroller) {
         if(useSvg()) {
             fileType = ".svg";
         } 
-        var postfix = ') no-repeat scroll center center / auto auto transparent;"';
-        var prefix = "background:url(css/images/Button_Lost";
+        var postfix = ')"';
+        var prefix = "background-image:url(css/images/Button_Lost";
 
         var imgOptions = {
             alt: "youLOST Button",
