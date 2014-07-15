@@ -41,3 +41,12 @@ function niceString(dhmsArray) {
 function getNiceTimeString(from) {
     return niceString(dayHourMinSec(new Date().getTime(), from));
 }
+function niceStringGetTime(string) {
+    var array = string.split(":");
+    var now = new Date().getTime();
+    now -= parseInt(array[0]) * 24 * 60 * 60 * 1000;
+    now -= parseInt(array[1]) * 60 * 60 * 1000;
+    now -= parseInt(array[2]) * 60 * 1000;
+    now -= parseInt(array[3]) * 1000;
+    return now;
+}

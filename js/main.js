@@ -30,7 +30,7 @@ var controller = (function() {
         log("page loader done", 1);
         pageLoader.loadPage("user", view.change);
         log("initializing done", 1);
-        view.lostBtn(pageLoader.lostBtn(user)).showBtn();
+        view.initLostBtn(pageLoader.lostBtn(user)).showBtn();
         return publicMethods;
     }
 
@@ -63,10 +63,13 @@ var controller = (function() {
         return localData.save(key, value);
     }
 
-    function doLoss(btn) {
+    function doLoss() {
         log("lose!", 1);
+        view.pressBtn(user.getLastLoss());
         user.lose();
-        view.pressBtn(btn);
+    }
+    function getLastLoss() {
+        return user.getLastLoss();
     }
 
     var publicMethods = {
@@ -78,6 +81,7 @@ var controller = (function() {
         save: save,
         navClick: navClick,
         doLoss: doLoss,
+        getLastLoss: getLastLoss
     };
 
     return publicMethods;

@@ -3,7 +3,6 @@ function PageLoader(conteroller) {
 
     var body = $("body");
     var navbarHtml;
-    var lostTimerTimer;
     var pages = {
         error: errorPage(),
         info: infoPage(),
@@ -85,7 +84,7 @@ function PageLoader(conteroller) {
         };
 
         var page  = createElement("div", pageOptions);
-        var content  = createElement("h1", {}, lossString);
+        var content  = createElement("p", {}, lossString);
         page = appendContent(page, content);
         return page;
 
@@ -156,41 +155,8 @@ function PageLoader(conteroller) {
         var content = createElement("div", imgOptions);
         //contentWrapper = appendContent(contentWrapper, content);
         popup = $(appendContent(popup, [lossTimer(user), content]));
-        jqueryTimerDiv = popup.find("#lossTimer");
-        popup.popup();
-        popup.on("vclick", "#youLoseBtn", function() { 
-            controller.doLoss(popup);
-            });
-        popup.on("dragstart", "#youLoseBtn", function() {return false;});
-        popup.on("popupafteropen", function() {
-            clearInterval(lostTimerTimer);
-            lostTimerTimer = setInterval(function() {
-                updateTimer(user, jqueryTimerDiv);
-            }, 1000);
-        });
-        popup.on("popupafterclose", function() {
-            clearInterval(lostTimerTimer);
-        });
         return popup;
     };
-
-    function updateTimer(user, timerDiv) {
-        controller.log("timer is on" + getNiceTimeString(user.getLastLoss()), 1);
-        timerDiv.html(createElement("h1",{},getNiceTimeString(user.getLastLoss())));
-        return;
-    }
-
-    function createElement(type, options, content) {
-        var element = "<" + type; 
-        for(var key in options) {
-            var obj = options[key];
-            if(options.hasOwnProperty(key)) {
-                element += " " + key + '="' + options[key] + '"';
-            }
-        }
-        element += ">" + (content || "")  + "</" + type + ">";
-        return element;
-    }
 
     function appendContent(existing, toAppend) {
         var regex = /<\/[^>]+>$/;

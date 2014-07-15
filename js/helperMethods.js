@@ -1,7 +1,12 @@
-function getDiv(id, dataRole) {
-    return getElement("div", {id: id, "data-role": dataRole}); 
+function createElement(type, options, content) {
+    var element = "<" + type; 
+    for(var key in options) {
+        var obj = options[key];
+        if(options.hasOwnProperty(key)) {
+            element += " " + key + '="' + options[key] + '"';
+        }
+    }
+    element += ">" + (content || "")  + "</" + type + ">";
+    return element;
 }
 
-function getElement(type, attrs) {
-    return $(document.createElement(type)).attr(attrs);
-}

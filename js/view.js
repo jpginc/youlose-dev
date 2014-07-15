@@ -1,5 +1,7 @@
 function View(controller) {
     var lostBtnHandle;
+    var lostBtnTimerHandle;
+    var intervalHandle;
     var myself = this;
 
     //a jquery dom object that is already inserted into the dom
@@ -11,25 +13,78 @@ function View(controller) {
         return this;
     };
 
-    this.lostBtn = function(btn) {
-        lostBtnHandle = btn;
-        //initialise the popup;
-        lostBtnHandle.popup();
+    this.pressBtn = function(lastLoss) {
+        clearInterval(intervalHandle);
+        lostBtnTimerHandle.html("do something cool!");
+        setTimeout(function() {
+            lostBtnHandle.popup("close");
+        }, 2000);
+/*
+        var difference = (new Date().getTime()) - lastLoss;
+        var step = Math.floor(difference / (1000/24));
+        var timeCoundownInterval = setInterval(function() {
+            timeCountdown(step);
+        }, 1000/24);
+*/
         return this;
     };
 
-    this.pressBtn = function(btn) {
-        btn.find("#btnShadow").addClass("clicked");
-        setTimeout(function() {
-            btn.find("#btnShadow").removeClass("clicked");
-            setTimeout(function() {
-                btn.popup("close");
-            }, 200);
-        },200);
+/*
+        var difference = (new Date().getTime()) - lastLoss;
+    function timeCountdown(step) {
+        var div;
+        console.log("counting down!");
+        var countingDown = niceStringGetTime(div.html());
+        countingDown -= step;
+        var difference = new Date().getTime() - countingDown;
+        if(difference < 0) {
+            div.html(getNiceTimeString(new Date().getTime())).toggleClass("countdown", false);
+            clearInterval(timeCoundownInterval);
+        } else {
+            div.html(getNiceTimeString(countingDown)).toggleClass("countDown");
+        }
+        return;
+    }
+*/
+
+    this.initLostBtn = function(btn) {
+        lostBtnHandle = btn;
+        lostBtnTimerHandle = btn.find("#lossTimer");
+        //initialise the popup
+        btn.popup();
+
+        //onclick
+        btn.on("vclick", "#youLoseBtn", function() { 
+            controller.doLoss();
+            });
+
+        //make it not draggable
+        btn.on("dragstart", "#youLoseBtn", function() {return false;});
+
+        btn.on("popupafteropen", function() {
+            clearInterval(intervalHandle);
+            intervalHandle = setInterval(function() {
+                updateTimer();
+            }, 1000);
+        });
+        btn.on("popupafterclose", function() {
+            clearInterval(intervalHandle);
+        });
+
         return this;
     };
+
+    function updateTimer() {
+        controller.log("timer is on" + getNiceTimeString(controller.getLastLoss()), 1);
+        lostBtnTimerHandle.html(createElement("p",{},getNiceTimeString(controller.getLastLoss())));
+        return;
+    }
+
 
     this.showBtn = function(dismiss) {
+        if(! lostBtnHandle) {
+            initLostBtn();
+        }
         var popupOptions = {
             dismissible: false,
             history: false,
