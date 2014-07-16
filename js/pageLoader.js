@@ -1,11 +1,14 @@
 function PageLoader(conteroller) {
     var myself = this;
+    var mapKey = "AIzaSyAoCSG9pGFlEtsgoz3XoHejO9-uODNLeG8";
     var body = $("body");
+    var googleMapsScriptHandle;
     var navbarHtml;
     var pages = { 
         page: {
             error: errorPage(),
             user: infoPage(),
+            map: mapPage(),
         },
         menu: {
             world: worldStats(),
@@ -45,6 +48,38 @@ function PageLoader(conteroller) {
         return page;
     }
 
+    this.loadMapsAPI = function(success, fail) {
+        if(typeof google !== "undefined" && typeof google.maps !== undefined) {
+            //the api is already loaded
+            return this;
+        }
+
+        insertToDom(pages.page.map, "map");
+
+        //remove the previous handle. there will be a handle
+        //if we tried to load the script once before but it timed out
+        if(googleMapsScriptHandle) { 
+            googleMapsScriptHandle.remove();
+        }
+
+        var url = "https://maps.googleapis.com/maps/api/js?key=" + mapKey + 
+            "&callback=gmap_draw";
+        var script = createElement("script", {src: url});
+        var timeout = setTimeout(function() {fail("timout");}, 7000);
+        window.gmap_draw = function(){
+            clearTimeout(timeout);
+            success();
+        };
+        googleMapsScriptHandle = $(body).append(script);  
+
+        return this;
+    };
+
+    function mapPage(successCallback, errorCallback) {
+        return $(getPage("mapPage", getContent("mapPageContent") + navbar()));
+    }
+
+
     function worldStats() {
         var menuItems = {
             "Map" : "page-mapTest",
@@ -66,7 +101,8 @@ function PageLoader(conteroller) {
             var options = {
                 "data-link-to": obj[key],
             };
-            listItems += createElement("li", options, '<a href="#">' + key + "</a>");
+            listItems += createElement("li", options, 
+                    createElement('a', {href: obj[key]}, key));
         }
         list = appendContent(list, listItems);
 

@@ -3,6 +3,37 @@ function View(controller) {
     var lostBtnTimerHandle;
     var intervalHandle;
     var myself = this;
+    $(document).on("pagecontainerbeforeload", function(event, data) {
+        event.preventDefault();
+        data.deferred.reject(data.absUrl, data.options);
+        
+        var split = getToPage(data.url).split("-");
+        if(split.length != 2) {
+            controller.log("toPage format error: " + getToPage(data.url), 5);
+        }
+        var page = split[1];
+        var database = split[2];
+
+        if(typeof google === "undefined" || typeof google.maps === undefined) {
+            controller.loadPage("page-map");
+            myself.loading("Loading Maps...");
+            controller.loadMapsAPI(function(data) {
+                var mapOptions = {
+                  center: new google.maps.LatLng(-34.397, 150.644),
+                  zoom: 8
+                };
+                var map = new google.maps.Map(document.getElementById("mapPageContent"), mapOptions);
+            }, loadAPIError);
+        }
+    });
+
+    function loadAPIError(reason) {
+        controller.log("api load error", 4);
+    }
+
+    function getToPage(url) {
+        return $.mobile.path.parseUrl(url).filename;
+    }
 
     //a jquery dom object that is already inserted into the dom
     this.change = function(to, type) {
@@ -132,11 +163,11 @@ function View(controller) {
     };
 
 
-    this.loading = function(off) {
-        if(off === false) {
+    this.loading = function(message) {
+        if(message === false) {
             $.mobile.loading("hide");
         } else {
-            $.mobile.loading("show");
+            $.mobile.loading("show", {text: message});
         }
         return myself;
     };

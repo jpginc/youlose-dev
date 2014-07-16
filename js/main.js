@@ -94,6 +94,9 @@ var controller = (function() {
     function getLastLoss() {
         return user.getLastLoss();
     }
+    function loadMapsAPI(success, fail) {
+        return pageLoader.loadMapsAPI(success, fail);
+    }
 
     var publicMethods = {
         log: log,
@@ -104,7 +107,9 @@ var controller = (function() {
         save: save,
         navClick: navClick,
         doLoss: doLoss,
-        getLastLoss: getLastLoss
+        getLastLoss: getLastLoss,
+        loadMapsAPI: loadMapsAPI
+
     };
 
     return publicMethods;
