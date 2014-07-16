@@ -33,7 +33,7 @@ function View(controller) {
     }
 
     function loadAPIError(reason) {
-        controller.log("api load error", 4);
+        controller.log("api load error" + reason, 4);
     }
 
     function getToPage(url) {
