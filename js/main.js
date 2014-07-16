@@ -10,7 +10,11 @@ var controller = (function() {
     //priority 10 is the highest, 1 is the lowes
     function log(toLog, priority) {
         if(errorReportingLevel < priority) {
-            console.log(toLog);
+            if(youLoseDevice === "web") {
+                console.log(toLog);
+            } else {
+                alert(toLog);
+            }
         }
         return publicMethods;
     }

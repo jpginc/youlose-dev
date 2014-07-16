@@ -13,19 +13,24 @@ function View(controller) {
         }
         var page = split[1];
         var database = split[2];
+        var mapFunction = startMap;
 
-        if(typeof google === "undefined" || typeof google.maps === undefined) {
+        try {
             controller.loadPage("page-map");
             myself.loading("Loading Maps...");
-            controller.loadMapsAPI(function(data) {
-                var mapOptions = {
-                  center: new google.maps.LatLng(-34.397, 150.644),
-                  zoom: 8
-                };
-                var map = new google.maps.Map(document.getElementById("mapPageContent"), mapOptions);
-            }, loadAPIError);
+            controller.loadMapsAPI(mapFunction, loadAPIError);
+        } catch(err) {
+            controller.log("loding gogole maps failed!", 9);
         }
     });
+
+    function startMap() {
+        var mapOptions = {
+          center: new google.maps.LatLng(-34.397, 150.644),
+          zoom: 8
+        };
+        var map = new google.maps.Map(document.getElementById("mapPageContent"), mapOptions);
+    }
 
     function loadAPIError(reason) {
         controller.log("api load error", 4);

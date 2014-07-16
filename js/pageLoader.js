@@ -51,6 +51,7 @@ function PageLoader(conteroller) {
     this.loadMapsAPI = function(success, fail) {
         if(typeof google !== "undefined" && typeof google.maps !== undefined) {
             //the api is already loaded
+            success();
             return this;
         }
 
